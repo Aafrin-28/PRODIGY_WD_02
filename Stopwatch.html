@@ -1,0 +1,107 @@
+<!DOCTYPE  html>
+<html>
+<head>
+  <title>Stopwatch</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  .box {
+     background: #222;
+     padding: 20px;
+     border-radius: 10x;
+     text-align: center;
+     width: 280px;
+  }
+
+  #time {
+    font-size: 32px;
+    margin: 15px 0;
+  }
+
+  button {
+    padding: 8px 12px;
+    margin: 4px;
+    font-size: 15px;
+  }
+
+  li {
+    list-style: none;
+    background: #333;
+    margin: 3px;
+    padding: 4px;
+    border-radius: 5px;
+  }
+ </style>
+</head>
+
+<body>
+  <div class="box">
+  <h2>Stopwatch</h2>
+  <div id="time">00:00:00</div>
+
+  <button onclick="start()">Start</button>
+  <button onclick="pause()">Pause</button>
+  <button onclick="reset()">Reset</button>
+  <button onclick="lap()">Lap</button>
+
+        <ul id="laps"></ul>
+    </div>
+
+<script>
+    let ms = 0;
+    let timer = null;
+    let running = false;
+
+    function format(ms) {
+        let sec = Math.floor(ms / 1000);
+        let min = Math.floor(sec / 60);
+        sec = sec % 60;
+        let milli = Math.floor((ms % 1000) / 10);
+
+        return (
+            String(min).padStart(2,'0') + ":" +
+            String(sec).padStart(2,'0') + ":" +
+            String(milli).padStart(2,'0')
+        );
+    }
+
+    function start() {
+        if (running) return;
+        running = true;
+
+        timer = setInterval(() => {
+            ms += 10;
+            document.getElementById("time").innerText = format(ms);
+        }, 10);
+    }
+
+    function pause() {
+        running = false;
+        clearInterval(timer);
+    }
+
+    function reset() {
+        pause();
+        ms = 0;
+        document.getElementById("time").innerText = "00:00:00";
+        document.getElementById("laps").innerHTML = "";
+    }
+
+    function lap() {
+        if (!running) return;
+        let li = document.createElement("li");
+        li.innerText = format(ms);
+        document.getElementById("laps").appendChild(li);
+    }
+</script>
+
+</body>
+</html>
+
